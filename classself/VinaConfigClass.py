@@ -6,7 +6,7 @@ class VinaConfig:
         self.size_x = 0
         self.size_y = 0
         self.size_z = 0
-        self.exhaustiveness = 25
-        self.num_modes = 50
-        self.energy_range = 4
-        self.cpu = 12
+        self.exhaustiveness = 0
+        self.num_modes = 0
+        self.energy_range = 0
+        self.cpu = 0

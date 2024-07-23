@@ -77,7 +77,8 @@ if __name__ == '__main__':
         df = df[~df['id'].isin(__monophosphate_list)]
         __monophosphate_list = ["H_"+x.rjust(3) for x in __monophosphate_list]
 
-        __gas_and_simple_list = ['OXY', 'CMO', 'NO', 'XE', 'KR', 'AR', 'I2I', 'HGN', 'PS9', '60C', 'HDZ', 'D8U']
+        __gas_and_simple_list = ['OXY', 'CMO', 'NO', 'XE', 'KR', 'AR', 'I2I',
+                                 'HGN', 'PS9', '60C', 'HDZ', 'D8U',"H2S","S3H"]
         df = df[~df['id'].isin(__gas_and_simple_list)]
         __gas_and_simple_list = ["H_"+x.rjust(3) for x in __gas_and_simple_list]
 
