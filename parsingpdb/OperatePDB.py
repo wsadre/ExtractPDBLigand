@@ -46,20 +46,22 @@ def info_get_non_chain_member_tuple_for_pdb(PDBInfo: PdbInfoClass, member_name: 
         __res.append(__cache)
     return __res
 
+
 def delete_ligand(pdbstruct: PDB.Structure.Structure, pdbinfo: PdbInfoClass):
     if pdbstruct.id != pdbinfo.id:
         print("PDB structure ids do not match")
         return 0
     else:
-        __ligand_list = info_get_non_chain_member_tuple_for_pdb(pdbinfo,"Ligand")
+        __ligand_list = info_get_non_chain_member_tuple_for_pdb(pdbinfo, "Ligand")
         for i in __ligand_list:
             del pdbstruct[i[0]][i[1]][i[2]]
+
 
 def delete_water(pdbstruct: PDB.Structure.Structure, pdbinfo: PdbInfoClass):
     if pdbstruct.id != pdbinfo.id:
         print("PDB structure ids do not match")
         return 0
     else:
-        __water_list = info_get_non_chain_member_tuple_for_pdb(pdbinfo,"Water")
+        __water_list = info_get_non_chain_member_tuple_for_pdb(pdbinfo, "Water")
         for i in __water_list:
             del pdbstruct[i[0]][i[1]][i[2]]
