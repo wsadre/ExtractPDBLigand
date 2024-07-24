@@ -27,16 +27,17 @@ def mainscript(input_file, output_path):
     del Resid, Chain, Model
     pdbstruc_info.refresh()
 
+    pdb_name = pdbstruc.header['idcode']
+
     # 删除水和配体
     if pdbstruc_info.Water.is_exist:
         OperatePDB.delete_water(pdbstruc, pdbstruc_info)
     if pdbstruc_info.Ligand.is_exist:
         OperatePDB.delete_ligand(pdbstruc, pdbstruc_info)
     else:
-        print("this PDB file does not have any Ligand")
+        print(f"{pdb_name} PDB file does not have any Ligand")
         return 0
 
-    pdb_name = pdbstruc.header['idcode']
     output_path = os.path.join(output_path, pdb_name)
     # 创建输出文件夹
     if not os.path.exists(output_path):
@@ -54,8 +55,10 @@ def mainscript(input_file, output_path):
         __n_cpu = 18
         __vinaconfig = VinaConfig()
         WriteVinaConfig.write_vina_config(__vinaconfig, centerdict=__center, sizedict=__size, n_cpu=__n_cpu)
+
         __ligand_name = 'chain' + '_' + pdbstruc_info.Ligand.chain.get()[i] + '_' + str(
             pdbstruc_info.Ligand.resseq.get()[i]) + '_' + pdbstruc_info.Ligand.name.get()[i]
+
         WriteVinaConfig.export_vina_config(__vinaconfig, os.path.join(output_path, __ligand_name + '.config'))
 
     # 保存删除水和配体的PDB

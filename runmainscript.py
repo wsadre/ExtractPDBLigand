@@ -1,15 +1,12 @@
-import uuid
 import os
-import pandas as pd
 
-from fileIO import PdbIO, WriteVinaConfig
-from classself import PdbInfoClass
 from classself.CCClass import CC
-from parsingpdb.JudgeResidAndWritePdbinfo import judge_resid
-from fileIO.WriteReadLigandDict import read_ligand_info_from_pkl
-from parsingpdb import OperatePDB
-from calc import CalcByDataFrame
-from classself.VinaConfigClass import VinaConfig
+
 from mainscript import mainscript
 
-mainscript("C:\\Users\\A\\Desktop\\6m49.pdb", "C:\\Users\\A\\Desktop")
+input_path = 'C:\\Users\\A\\Desktop\\AAAA\\AA'
+input_file = os.listdir(input_path)
+output_path = "C:\\Users\\A\\Desktop\\output"
+
+for i in input_file:
+    mainscript(os.path.join(input_path, i),output_path)
