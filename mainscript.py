@@ -45,7 +45,7 @@ def mainscript(input_file, output_path):
     # 数据是等长度的可以用任意一个字段去获取长度
     n_ligand = len(pdbstruc_info.Ligand.name.get())
 
-    #保存对接config
+    # 保存对接config
     for i in range(n_ligand):
         __center = CalcByDataFrame.get_center_coord_as_dict(pd.DataFrame(pdbstruc_info.Ligand.coord.get()[i]))
         __size = CalcByDataFrame.get_size_permanent_as_dict(pd.DataFrame(pdbstruc_info.Ligand.coord.get()[i]),
@@ -54,12 +54,11 @@ def mainscript(input_file, output_path):
         __n_cpu = 18
         __vinaconfig = VinaConfig()
         WriteVinaConfig.write_vina_config(__vinaconfig, centerdict=__center, sizedict=__size, n_cpu=__n_cpu)
-        __ligand_name = 'chain' + '_' + pdbstruc_info.Ligand.chain.get()[i] + '_' + str(pdbstruc_info.Ligand.resseq.get()[i]) + '_' + pdbstruc_info.Ligand.name.get()[i]
+        __ligand_name = 'chain' + '_' + pdbstruc_info.Ligand.chain.get()[i] + '_' + str(
+            pdbstruc_info.Ligand.resseq.get()[i]) + '_' + pdbstruc_info.Ligand.name.get()[i]
         WriteVinaConfig.export_vina_config(__vinaconfig, os.path.join(output_path, __ligand_name + '.config'))
 
-    #保存删除水和配体的PDB
-    PdbIO.write_pdb_file(structure=pdbstruc,file_path=os.path.join(output_path, pdb_name + '.pdb'))
+    # 保存删除水和配体的PDB
+    PdbIO.write_pdb_file(structure=pdbstruc, file_path=os.path.join(output_path, pdb_name + '.pdb'))
 
     return 0
-
-
