@@ -9,3 +9,8 @@
 [下载地址](http://ligand-expo.rcsb.org/dictionaries/cc-to-pdb.tdd)
 
 可以手动下载更新,文件名不可更改
+
+```
+更新方式：
+ ·手动下载上述文件进行替换
+ ·直接运行/fileIO/文件夹下的ExtractCCInfo.py

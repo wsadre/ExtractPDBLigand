@@ -4,7 +4,6 @@ import pandas as pd
 
 from fileIO import PdbIO, WriteVinaConfig
 from classself import PdbInfoClass
-from classself.CCClass import CC
 from parsingpdb.JudgeResidAndWritePdbinfo import judge_resid
 from fileIO.WriteReadLigandDict import read_ligand_info_from_pkl
 from parsingpdb import OperatePDB
