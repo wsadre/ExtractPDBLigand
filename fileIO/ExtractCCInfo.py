@@ -7,7 +7,7 @@ class CC:
 if __name__ == '__main__':
     import pandas as pd
     import dill as pickle
-
+    from fileIO.MolDatRead import read_type_dat
 
     def __read_cc_counts_extra_as_df(filepath='../data/cc-counts-extra.tdd'):
         return pd.read_table(filepath, sep='\t', na_values=['N/A'], keep_default_na=False)
@@ -47,54 +47,45 @@ if __name__ == '__main__':
 
 
     def __molname_type_as_dict(df: pd.DataFrame):
-        df = df[~df['id'].isin(['GLY', 'LEU', 'ALA', 'LYS', 'SER', 'VAL', 'GLU', 'THR',
-                                'ARG', 'ILE', 'ASP', 'ASN', 'PRO', 'GLN', 'PHE', 'TYR',
-                                'HIS', 'MET', 'RTP', 'CYS'])]
 
-        __unknow_list = ['UNX', 'UNL', 'UNK']
-        df = df[~df['id'].isin(__unknow_list)]
-        __unknow_list = ["H_" + x.rjust(3) for x in __unknow_list]
+        moltype = read_type_dat()
 
-        __water_list = ['HOH']
-        df = df[~df['id'].isin(__water_list)]
+        df = df[~df['id'].isin(moltype['SAA'])]
+
+        df = df[~df['id'].isin(moltype['UNK'])]
+        __unknow_list = ["H_" + x.rjust(3) for x in moltype['UNK']]
+
+        df = df[~df['id'].isin(moltype['WAT'])]
         # BioPDB会把水解析成W，但是文件中的W是钨，只能在删除后添加
-        __water_list = ["H_" + x.rjust(3) for x in __water_list]
+        __water_list = ["H_" + x.rjust(3) for x in moltype['WAT']]
         __water_list.extend(['W'])
 
-        __NAG_list = ['NAG']
-        df = df[~df['id'].isin(__NAG_list)]
-        __NAG_list = ["H_" + x.rjust(3) for x in __NAG_list]
+        df = df[~df['id'].isin(moltype['SAG'])]
+        __SAG_list = ["H_" + x.rjust(3) for x in moltype['SAG']]
 
-        __ion_list = df.loc[df['name'].str.contains(' ION|CLUSTER')]['id'].to_list()
-        __ion_list.extend(['ND4'])
-        df = df[~df['id'].isin(__ion_list)]
-        __ion_list = ["H_" + x.rjust(3) for x in __ion_list]
+        df = df[~df['id'].isin(moltype['ICG'])]
+        __ion_list = ["H_" + x.rjust(3) for x in moltype['ICG']]
 
-        __atom_list = df.loc[df['name'].str.contains(' ATOM')]['id'].to_list()
-        __atom_list.extend(['ARS', 'RE', 'TE', 'TA0'])
-        df = df[~df['id'].isin(__atom_list)]
-        __atom_list = ["H_" + x.rjust(3) for x in __atom_list]
+        df = df[~df['id'].isin(moltype['ATM'])]
+        __atom_list = ["H_" + x.rjust(3) for x in moltype['ATM']]
 
-        __monophosphate_list = df.loc[df['name'].str.contains('MONOPHOSPHATE')]['id'].to_list()
-        df = df[~df['id'].isin(__monophosphate_list)]
-        __monophosphate_list = ["H_" + x.rjust(3) for x in __monophosphate_list]
+        df = df[~df['id'].isin(moltype['MNP'])]
+        __monophosphate_list = ["H_" + x.rjust(3) for x in moltype['MNP']]
 
-        __gas_and_simple_list = ['OXY', 'CMO', 'NO', 'XE', 'KR', 'AR', 'I2I',
-                                 'HGN', 'PS9', '60C', 'HDZ', 'D8U', "H2S", "S3H"]
-        df = df[~df['id'].isin(__gas_and_simple_list)]
-        __gas_and_simple_list = ["H_" + x.rjust(3) for x in __gas_and_simple_list]
+        df = df[~df['id'].isin(moltype['GSG'])]
+        __gas_and_simple_list = ["H_" + x.rjust(3) for x in moltype['GSG']]
 
         __other_list = df['id'].to_list()
         __other_list = ["H_" + x.rjust(3) for x in __other_list]
 
         return {
-            'Unknow': __unknow_list,
-            'Nag': __NAG_list,
-            'Water': __water_list,
-            'Ion': __ion_list,
-            'Monophosphate': __monophosphate_list,
-            'Gas_and_Simple': __gas_and_simple_list,
-            'Atom': __atom_list,
+            'UNK': __unknow_list,
+            'SAG': __SAG_list,
+            'WAT': __water_list,
+            'ICG': __ion_list,
+            'MNP': __monophosphate_list,
+            'GSG': __gas_and_simple_list,
+            'ATM': __atom_list,
             'Other': __other_list
         }
 
